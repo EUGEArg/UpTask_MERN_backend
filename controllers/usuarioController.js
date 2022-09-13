@@ -69,7 +69,7 @@ const confirmar = async (req, res) =>{
     const { token } = req.params //Leemos de la url
     const usuarioConfirmar = await Usuario.findOne({token}) // Buscamos un usuario con ese token
     if(!usuarioConfirmar) { //si no existe el usuario a confirmar
-        const error = new Error('Token no válido');
+        const error = new Error('Token no válido'); 
         return res.status(403).json({msg: error.message})
     }     
     try{ //Si existe:
