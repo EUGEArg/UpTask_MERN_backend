@@ -2,7 +2,11 @@ import Proyecto from "../models/Proyecto.js"
 import Tarea from "../models/Tarea.js"
 
 const obtenerProyectos = async(req, res) => {
-    const proyectos = await Proyecto.find().where('creador').equals(req.usuario) //.find trae todos los proyectos almacenados en la BD. Luego consulto por el creador del proyecto
+    const proyectos = await Proyecto
+        .find()//.Trae todos los proyectos almacenados en la BD.
+        .where('creador') //Consulto por el creador del proyecto
+        .equals(req.usuario) //Comparo
+        .select('-tareas') //Para que no traiga las tareas
 
     res.json(proyectos)
 }
@@ -22,7 +26,7 @@ const nuevoProyecto = async (req, res) => {
 const obtenerProyecto = async (req, res) => {
     const { id } = req.params; //.params para acceder al routing dinámico.
     
-    const proyecto = await Proyecto.findById(id.trim());
+    const proyecto = await Proyecto.findById(id).populate('tareas'); //La ref es por el campo que tenemos en Proyecto
     console.log(proyecto);
 
      if(!proyecto) { //verificar si el proyecto no existe
@@ -35,13 +39,8 @@ const obtenerProyecto = async (req, res) => {
         return res.status(401).json({ msg: error.message });
     }
 
-    //Obtener las tareas del Proyecto
-    const tareas = await Tarea.find().where('proyecto').equals(proyecto._id)//find() trae todas las tareas; where() busca el proyecto en particular; equals(id) el id al cual pertenece el proyecto 
-    
-    res.json({ //Así puedo obtener el proyecto y las tareas asignadas al mismo
-        proyecto,
-        tareas,
-    })
+    res.json(proyecto)//Obtener el proyecto 
+        
 };
 
 const editarProyecto = async(req, res) => {
