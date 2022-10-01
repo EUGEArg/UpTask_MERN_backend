@@ -4,10 +4,15 @@
   "description": "MERN stack",
   "type": "module",
   "main": "index.js",
+ 
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
-  },
+    "dev": "react-scripts start",
+    "start": "serve -s build",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm run build"
+    },
   "keywords": [
     "MERN",
     "Node"
