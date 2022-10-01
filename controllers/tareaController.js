@@ -25,17 +25,17 @@ const agregarTarea = async (req,res) =>{
     try { 
         const tareaAlmacenada = await Tarea.create(req.body);
         //Almacenar ID en el Proyecto
-        existeProyecto.tareas.push(tareaAlmacenada._id)
-        await existeProyecto.save()// Guardar el cambio en BD
+        existeProyecto.tareas.push(tareaAlmacenada._id);
+        await existeProyecto.save();// Guardar el cambio en BD
         res.json(tareaAlmacenada);
     }catch(error) {
-        console.log(error)
+        console.log(error);
     }
 };
 
 //----------------------------------------OBTENER TAREA----------------------------------------
 const obtenerTarea = async (req,res) =>{
-    const { id } = req.params
+    const { id } = req.params;
     
     //populate--> para colecciones por medio de su ref
     const tarea = await Tarea.findById(id).populate('proyecto'); 
@@ -54,9 +54,10 @@ const obtenerTarea = async (req,res) =>{
 
 //----------------------------------------ACTUALIZAR TAREA----------------------------------------
 const actualizarTarea = async (req,res) =>{ //Leer lo que enviemos en el form
-    const { id } = req.params
+    const { id } = req.params;
     
     const tarea = await Tarea.findById(id).populate('proyecto'); 
+
     if(!tarea) {
         const error = new Error('Tarea no encontrada');
         return res.status(404).json({msg: error.message});
@@ -76,13 +77,13 @@ const actualizarTarea = async (req,res) =>{ //Leer lo que enviemos en el form
         const tareaAlmacenada = await tarea.save(); //Guardo cambios
         res.json(tareaAlmacenada); //Retorno la tarea almacenada
     }catch(error) {
-        console.log(error)
+        console.log(error);
     }
 }; 
 
 //----------------------------------------ELIMINAR TAREA----------------------------------------
 const eliminarTarea = async (req,res) =>{
-    const { id } = req.params
+    const { id } = req.params;
     
     const tarea = await Tarea.findById(id).populate('proyecto'); 
     if(!tarea) {
@@ -96,12 +97,12 @@ const eliminarTarea = async (req,res) =>{
     }
 
     try {
-        const proyecto = await Proyecto.findById(tarea.proyecto) //Identificar el proyecto
-        proyecto.tareas.pull(tarea._id)  //Acceso a las tareas
+        const proyecto = await Proyecto.findById(tarea.proyecto); //Identificar el proyecto
+        proyecto.tareas.pull(tarea._id);  //Acceso a las tareas
         await Promise.allSettled([await proyecto.save(), await tarea.deleteOne()])
         res.json({msg: 'La Tarea se eliminó'}) 
     }catch(error) {
-        console.log(error)
+        console.log(error);
     }
 };
 
