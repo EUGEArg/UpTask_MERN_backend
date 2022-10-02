@@ -50,8 +50,8 @@ const io = new Server(servidor, {
     pingTimeout:60000,
     cors: {
         origin: process.env.FRONTEND_URL,
-        methods: ["GET", "POST"],
-        credentials: true
+        methods: ["GET", "POST"],  // Tuve que agregar para que no tire errores de cors y socket.io
+        credentials: true          // Idem anterior
     },
 });
 
