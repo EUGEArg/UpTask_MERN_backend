@@ -172,7 +172,7 @@ const eliminarColaborador = async(req, res) => {
         return res.status(404).json({msg: error.message});
     }
     
-   //Luego de verficar: Eliminar el usuario como colaborador
+   //Luego de verificar: Eliminar el usuario como colaborador
    proyecto.colaboradores.pull(req.body.id);
    await proyecto.save();
    res.json({msg: 'Colaborador Eliminado correctamente'});
